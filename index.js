@@ -43,8 +43,7 @@ var menuLinks = [
 
 ];
 
-// Part 1:
-//Select and cache the <main> element in a variable named mainEl.
+// Part 1: selects the main element and stores in mainEl ,sets backgrnd color using css style and add initial content as "DOM Manipulation"
 
 const mainEl = document.querySelector("main");
 
@@ -52,32 +51,32 @@ mainEl.style.backgroundColor = "var(--main-bg)";
 
 mainEl.innerHTML = "<h1>DOM Manipulation</h1>";
 
-mainEl.classList.add("flex-ctr");
+mainEl.classList.add("flex-ctr");                          //center-content
 
 //---------------------------------------------------------------------------------------------
 // Part:2 Creating a Menu Bar
 
-const topmenuEl = document.getElementById("top-menu");
+const topmenuEl = document.getElementById("top-menu");               //Top navigation bar element
 
-topmenuEl.style.height = "100%";
+topmenuEl.style.height = "100%";                                     // height=100%
 
-topmenuEl.style.backgroundColor = "var(--top-menu-bg)"
+topmenuEl.style.backgroundColor = "var(--top-menu-bg)"               // top menu background color
 
-topmenuEl.classList.add("flex-around");
+topmenuEl.classList.add("flex-around");                              //flex-around spacing
 
 //--------------------------------------------------------------------------------------
 
 // Part 3: Adding Menu Buttons
 
-menuLinks.forEach(function (link) {
+menuLinks.forEach(function (link) {                                //loops through every object in menuLinks
 
-  const a = document.createElement("a");
+  const a = document.createElement("a");                          //creates an anchor element
 
-  a.setAttribute("href", link.href);
+  a.setAttribute("href", link.href);                             
 
-  a.textContent = link.text;
+  a.textContent = link.text;                              
 
-  topmenuEl.appendChild(a);
+  topmenuEl.appendChild(a);                                       //adds the link to topmenu
 
 });
 
@@ -108,79 +107,17 @@ submenuEl.style.position = "absolute";
 submenuEl.style.top = "0";
 
 
-  /*Select and cache the all of the <a> elements inside of topMenuEl in a variable named topMenuLinks.
-  Attach a delegated 'click' event listener to topMenuEl.
-  The first line of code of the event listener function should call the event object's preventDefault() method.
-  The second line of code of the function should immediately return if the element clicked was not an <a> element.
-  Log the content of the <a> to verify the handler is working.*/
-  /*topmenuEl = addEventListener("click", menie(e))
-  function menie(e) {
-    console.log('test');
-    e.preventDefault();
-    if (!e.target.classList.contains("active"))
-      if (!e.target.tagName === "A") return;
-    console.dir(e.target);
-  }
-  console.log(topmenuLinks);*/
-  const topMenuLinks=topmenuEl.querySelectorAll("a");
-  topmenuEl.addEventListener('click',function(e){
-    e.preventDefault();
-    if(e.target.tagName!=="A") return;
-    
-      console.log(e.target.textContent);
-      const tarLink=e.target;
-      if(!tarLink.classList.contains("active"))
-      {
-        topMenuLinks.forEach(link=> {
-          link.classList.remove("active");
-        });
-       tarLink.classList.add("active");
-       const linkObj = menuLinks.find(link=>link.text===tarLink.textContent);
+/*Select and cache the all of the <a> elements inside of topMenuEl in a variable named topMenuLinks.
+Attach a delegated 'click' event listener to topMenuEl.
+The first line of code of the event listener function should call the event object's preventDefault() method.
+The second line of code of the function should immediately return if the element clicked was not an <a> element.
+Log the content of the <a> to verify the handler is working.
+Within the event listener, if the clicked <a> element does not yet have a class of "active" (it was inactive when clicked):
+If the clicked <a> element's "link" object within menuLinks has a subLinks property (all do, except for the "link" object for ABOUT), set the CSS top property of subMenuEl to 100%.
+Otherwise, set the CSS top property of subMenuEl to 0.
+Hint: Caching the "link" object will come in handy for passing its subLinks array later.
 
-      if (linkObj.subLinks) {
-        submenuEl.style.top = "100%";
-      }
-      else {
-        submenuEl.style.top = "0";
-      }
-       
-      }
-    
-  }); 
-
-  //Part-5
-
-  /*Within the event listener, if the clicked <a> element does not yet have a class of "active" (it was inactive when clicked):
-  If the clicked <a> element's "link" object within menuLinks has a subLinks property (all do, except for the "link" object for ABOUT), set the CSS top property of subMenuEl to 100%.
-  Otherwise, set the CSS top property of subMenuEl to 0.
-  Hint: Caching the "link" object will come in handy for passing its subLinks array later.*/
-  /*const links = document.querySelectorAll(".topmenuLinks");
-  links.forEach((link, index)=> {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      if (!this.classList.contains("active"))
-      {
-      links.forEach(item => {
-        item.classList.remove("active");
-      });
-      this.classList.add("active");
-      const linkObj = menuLinks[index];
-
-      if (linkObj.subLinks) {
-        submenuEl.style.top = "100%";
-      }
-      else {
-        submenuEl.style.top = "0";
-      }
-    }
-  });
-});
-*/
-
-
-part-6
-
-/*Ensure that clicking CATALOG, ORDERS, etc. shows the submenu bar, and that clicking them again hides it. Clicking ABOUT should not show the submenu bar.
+Ensure that clicking CATALOG, ORDERS, etc. shows the submenu bar, and that clicking them again hides it. Clicking ABOUT should not show the submenu bar.
 
 The submenu needs to be dynamic based on the clicked link. To facilitate that, we will create a helper function called buildSubmenu that does the following:
 
@@ -217,3 +154,68 @@ Update the contents of mainEl, within an <h1>, to the contents of the <a> elemen
 If the ABOUT link is clicked, an <h1>About</h1> should be displayed.
 
 */
+
+const topMenuLinks = topmenuEl.querySelectorAll("a");
+topmenuEl.addEventListener('click', function (e) {                //ClickeventListener for Topmenu
+  e.preventDefault();                                             //prevents default link navigation
+  if (e.target.tagName !== "A") return;
+
+  console.log(e.target.textContent);
+  const tarLink = e.target;                                      //tarLink holds clicked link
+  
+  if (tarLink.classList.contains("active"))                      //if clicked link is already active
+     {
+    
+      tarLink.classList.remove("active");
+      submenuEl.style.top="0";
+      return;
+    }
+
+    topMenuLinks.forEach(link=>{                                            //loops through toplinks
+      link.classList.remove("active");
+    });
+    tarLink.classList.add("active");                                         //adds active class
+
+    const linkObj = menuLinks.find(link => link.text === tarLink.textContent);
+    
+
+      
+      if (linkObj.subLinks && linkObj.subLinks.length>0) {             
+        buildSubmenu(linkObj.subLinks);                                //creates submenu items
+        submenuEl.style.top = "100%";
+      }
+      else {
+        submenuEl.style.top = "0";
+        mainEl.innerHTML=`<h1>${linkObj.text.charAt(0).toUpperCase()+linkObj.text.slice(1)}</h1>`;
+        return;
+      }
+
+    
+
+  }); 
+  submenuEl.addEventListener('click',function(e){                 //adding clickeventlistener for submenu
+      e.preventDefault();                                         //stops page navigation
+    if(e.target.tagName!=="A")return;
+    console.log(e.target.textContent);                            //log submenu text
+    submenuEl.style.top="0";
+    topMenuLinks.forEach(link=>{
+      link.classList.remove("active");                            //removes active class from topmenu
+    });
+//to display submenu item text content ,first character upper case 
+    mainEl.innerHTML=`<h1>${e.target.textContent.charAt(0).toUpperCase()+e.target.textContent.slice(1)}</h1>`;
+  });
+
+
+
+
+
+//function buildSubMenu
+    function buildSubmenu(subLinks) {
+      submenuEl.innerHTML = "";                                      //clears old submenu items
+      subLinks.forEach(link => { 
+        const a = document.createElement("a");                       //loops through submenu array
+        a.href=link.href;                                            //creates anchor element and sets URL
+        a.textContent = link.text;                                   
+        submenuEl.appendChild(a);                                   //appends submenu item 
+      }); 
+    }
