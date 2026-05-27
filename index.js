@@ -177,8 +177,6 @@ topmenuEl.addEventListener('click', function (e) {                //ClickeventLi
     tarLink.classList.add("active");                                         //adds active class
 
     const linkObj = menuLinks.find(link => link.text === tarLink.textContent);
-    
-
       
       if (linkObj.subLinks && linkObj.subLinks.length>0) {             
         buildSubmenu(linkObj.subLinks);                                //creates submenu items
@@ -188,9 +186,7 @@ topmenuEl.addEventListener('click', function (e) {                //ClickeventLi
         submenuEl.style.top = "0";
         mainEl.innerHTML=`<h1>${linkObj.text.charAt(0).toUpperCase()+linkObj.text.slice(1)}</h1>`;
         return;
-      }
-
-    
+      }  
 
   }); 
   submenuEl.addEventListener('click',function(e){                 //adding clickeventlistener for submenu
@@ -204,10 +200,6 @@ topmenuEl.addEventListener('click', function (e) {                //ClickeventLi
 //to display submenu item text content ,first character upper case 
     mainEl.innerHTML=`<h1>${e.target.textContent.charAt(0).toUpperCase()+e.target.textContent.slice(1)}</h1>`;
   });
-
-
-
-
 
 //function buildSubMenu
     function buildSubmenu(subLinks) {
